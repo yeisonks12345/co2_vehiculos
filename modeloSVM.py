@@ -4,7 +4,9 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVR
 from sklearn.metrics import mean_squared_error, r2_score
+#Metricas modelo: MSE 704.47, R2 0.79
 
+import pickle
 df = pd.read_csv('emisionesco2vehiculos.csv',sep = ';')
 
 #separamos los datos
@@ -20,11 +22,11 @@ label_encoders = {}
 
 for column in categorical_columns:
     le = LabelEncoder()
-    features[column] = le.fit_transform(features[column])
+    features[column+ "codif"] = le.fit_transform(features[column])
     label_encoders[column] = le
 
-
-#print(features.head(2))
+#Se crea un dataframe que contiene las variables codificadas
+#features.to_csv('features.csv')
 
 # Codigo para Revertir las Columnas Numéricas a las Categóricas Originales
 #for column in categorical_columns:
@@ -34,7 +36,7 @@ for column in categorical_columns:
 # aplicar modelos de SVM
 
 
-X_train, X_test, y_train, y_test = train_test_split(features, target, test_size=0.2, random_state=42)
+"""X_train, X_test, y_train, y_test = train_test_split(features, target, test_size=0.2, random_state=42)
 
 # Paso 4: Entrenar el Modelo SVR
 svr_model = SVR(kernel='linear')  # probar otros kernels como 'rbf', 'poly', etc.
@@ -44,8 +46,11 @@ svr_model.fit(X_train, y_train)
 y_pred = svr_model.predict(X_test)
 
 
-print("\nMean Squared Error:")
-print(mean_squared_error(y_test, y_pred))
+#print("\nMean Squared Error:")
+#print(mean_squared_error(y_test, y_pred))
 
-print("\nR^2 Score:")
-print(r2_score(y_test, y_pred))
+#print("\nR^2 Score:")
+#print(r2_score(y_test, y_pred))
+
+pickle.dump(svr_model,open('co2_vehiculos.pkl','wb'))
+"""
